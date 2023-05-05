@@ -18,8 +18,8 @@ function playAgain() {
 
 function guessingGame(name, scoreBoard) {
     var input = parseInt(prompt(`Hello ${name}! Guess a number between 1 and 100`));
-    //var num = getRandomInt(1,100);
-    num = 50;
+    var num = getRandomInt(1,100);
+    // num = 50;
     var arrayTries = [input];
     while(input !== num)
     {
