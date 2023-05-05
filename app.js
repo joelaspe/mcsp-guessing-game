@@ -4,8 +4,7 @@ var scoreBoard = {
     `Joey`: 7 */
 }
 var name = prompt("Welcome to the guessing game. What is your name?");
-
-
+scoreBoard = JSON.parse(localStorage.getItem('scoreBoard'));
 guessingGame(name, scoreBoard);
 
 function playAgain() {
@@ -56,6 +55,7 @@ function guessingGame(name, scoreBoard) {
     }
     console.log(scoreBoardString);
     alert(scoreBoardString);
+    localStorage.setItem('scoreBoard', JSON.stringify(scoreBoard));
     if(playAgain()) {
         guessingGame(name, scoreBoard);
     }
