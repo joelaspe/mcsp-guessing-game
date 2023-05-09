@@ -17,8 +17,8 @@ function guessingGame(player, scoreBoard) {
         }
     }
     var input = parseInt(prompt(`Hello ${scoreBoard[player].name}! Guess a number between 1 and 100`));
-    //var num = getRandomInt(1,100);
-    var num = 50; // only used for testing
+    var num = getRandomInt(1,100);
+    //var num = 50; // only used for testing
     var arrayTries = [input];
     while(input !== num)
     {
@@ -50,9 +50,9 @@ function guessingGame(player, scoreBoard) {
     var emptySpace = ' ';
     for(let i = 0; i < scoreBoardEntries.length; i++)
     {
-        var whitespaceSize = 10 - scoreBoardEntries[i][0].length; //determine whitespace to add
-        //scoreBoardString += scoreBoardEntries[i].join(':'); //--> 'Nathan     :     5'
-       scoreBoardString += scoreBoardEntries[i][0] + emptySpace.repeat(whitespaceSize) + ':     ' + scoreBoardEntries[i][1] + '\n';
+        var whitespaceSize = 20 - scoreBoardEntries[i][0].length; //determine whitespace to add
+        console.log('Determining whitespace. For player: ' + scoreBoardEntries[i][0] + ' it is ' + whitespaceSize);
+        scoreBoardString += scoreBoardEntries[i][0] + emptySpace.repeat(whitespaceSize) + ':     ' + scoreBoardEntries[i][1] + '\n';
       
     }
     console.log(scoreBoardString);
@@ -78,13 +78,10 @@ function getRandomInt(min, max) {
 function getHighScores(scoreBoard) {
     //returns an array of all player names and high scores
     var scoreArray = [];   // [['Nathan', 5], ['Joey', 3]]
-    var tempArray = ['name', 10];
     var scoreKeys = Object.keys(scoreBoard);
     for(var i = 0; i < scoreKeys.length; i++)
     {
-        tempArray[0] = scoreKeys[i];
-        tempArray[1] = scoreBoard[scoreKeys[i]].bestScore;    
-        scoreArray.push(tempArray);
+        scoreArray.push([scoreKeys[i], scoreBoard[scoreKeys[i]].bestScore]);
     }
     return scoreArray;
 }
