@@ -1,25 +1,19 @@
-var scoreBoard = {
-    /* 
-    `Chief`: 5
-    `Joey`: 7 */
-}
 var name = prompt("Welcome to the guessing game. What is your name?");
-scoreBoard = JSON.parse(localStorage.getItem('scoreBoard'));
-guessingGame(name, scoreBoard);
 
-function playAgain() {
-    var result = prompt("Play again? (yes/no)");
-    if(result.toLowerCase() === 'yes' || result.toLowerCase() === 'y')
-    {
-        return true;
-    }
-    return false;
+var scoreBoard = JSON.parse(localStorage.getItem('scoreBoard'));
+
+//required when running the program for the first time on a browser
+if(scoreBoard === null)
+{
+    scoreBoard = { };
 }
+
+guessingGame(name, scoreBoard);
 
 function guessingGame(name, scoreBoard) {
     var input = parseInt(prompt(`Hello ${name}! Guess a number between 1 and 100`));
     var num = getRandomInt(1,100);
-    // num = 50;
+    //var num = 50; only used for testing
     var arrayTries = [input];
     while(input !== num)
     {
@@ -56,7 +50,9 @@ function guessingGame(name, scoreBoard) {
     console.log(scoreBoardString);
     alert(scoreBoardString);
     localStorage.setItem('scoreBoard', JSON.stringify(scoreBoard));
-    if(playAgain()) {
+    
+    
+    if(confirm('Would you like to play again?')) {
         guessingGame(name, scoreBoard);
     }
     else{
