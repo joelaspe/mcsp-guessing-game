@@ -1,5 +1,11 @@
 var scoreBoard = JSON.parse(localStorage.getItem('scoreBoard'));
 var player = prompt("Welcome to the guessing game. What is your name?");
+while(player.length > 20)
+{
+    player = prompt("Player name must be less than 20 characters");
+}
+
+
 //required when running the program for the first time on a browser
 if(scoreBoard === null)
 {
