@@ -1,42 +1,50 @@
-var name = prompt("Welcome to the guessing game. What is your name?");
-
 var scoreBoard = JSON.parse(localStorage.getItem('scoreBoard'));
-
+var player = prompt("Welcome to the guessing game. What is your name?");
 //required when running the program for the first time on a browser
 if(scoreBoard === null)
 {
     scoreBoard = { };
 }
 
-guessingGame(name, scoreBoard);
+guessingGame(player, scoreBoard);
 
-function guessingGame(name, scoreBoard) {
-    var input = parseInt(prompt(`Hello ${name}! Guess a number between 1 and 100`));
-    var num = getRandomInt(1,100);
-    //var num = 50; only used for testing
+function guessingGame(player, scoreBoard) {
+    if(!scoreBoard[player]) {
+        scoreBoard[player] = {
+            name: player,
+            guesses: [],
+            bestScore: Infinity
+        }
+    }
+    var input = parseInt(prompt(`Hello ${scoreBoard[player].name}! Guess a number between 1 and 100`));
+    //var num = getRandomInt(1,100);
+    var num = 50; // only used for testing
     var arrayTries = [input];
     while(input !== num)
     {
         if(input > num ) {
-            input = parseInt(prompt((`Lower ${name}...`)));
+            input = parseInt(prompt((`Lower ${scoreBoard[player].name}...`)));
         }
         else {
-            input = parseInt(prompt((`Higher ${name}...`)));
+            input = parseInt(prompt((`Higher ${scoreBoard[player].name}...`)));
         }
         arrayTries.push(input);
     }
-    // the user guessed the correct number, display the high scores and the last games result
-    alert(`Correct ${name}! Your previous guesses were ` + arrayTries.join(`, `) + `.`);
+    // Feature 4: the user guessed the correct number, display the high scores and the last games result
+    alert(`Correct ${scoreBoard[player].name}! Your previous guesses were ` + arrayTries.join(`, `) + `.`);
     var numGuess = arrayTries.length;
     
-    if(scoreBoard[name] === undefined)
+    if(scoreBoard[player].guesses === [] || numGuess < scoreBoard[player].bestScore)
     {
-        scoreBoard[name] = numGuess;
-    } else if(numGuess < scoreBoard[name])
-    {
-        scoreBoard[name] = numGuess;
-    }
-    var scoreBoardEntries = Object.entries(scoreBoard); // [['Nathan', 5], ['Joey', 3]]
+        scoreBoard[player].guesses.push(numGuess);
+        scoreBoard[player].bestScore = numGuess;
+        console.log('Either first time playing or a new high score');
+        console.log(scoreBoard[player].bestScore);
+    } else {
+        scoreBoard[player].guesses.push(numGuess);
+        console.log('Did not beat a high score. The high score is ' + scoreBoard[player].bestScore);
+    } 
+    var scoreBoardEntries = getHighScores(scoreBoard); // [['Nathan', 5], ['Joey', 3]]
     console.log(scoreBoardEntries);
     var scoreBoardString = ''; 
     var emptySpace = ' ';
@@ -53,11 +61,11 @@ function guessingGame(name, scoreBoard) {
     
     
     if(confirm('Would you like to play again?')) {
-        guessingGame(name, scoreBoard);
+        guessingGame(player, scoreBoard);
     }
     else{
-        name = prompt("What is your name?");
-        guessingGame(name, scoreBoard);
+        player = prompt("What is your name?");
+        guessingGame(player, scoreBoard);
     }
 }
 
@@ -67,14 +75,17 @@ function getRandomInt(min, max) {
     return Math.floor(Math.random() * (max - min) + min); // The maximum is exclusive and the minimum is inclusive
   }
   
+function getHighScores(scoreBoard) {
+    //returns an array of all player names and high scores
+    var scoreArray = [];   // [['Nathan', 5], ['Joey', 3]]
+    var tempArray = ['name', 10];
+    var scoreKeys = Object.keys(scoreBoard);
+    for(var i = 0; i < scoreKeys.length; i++)
+    {
+        tempArray[0] = scoreKeys[i];
+        tempArray[1] = scoreBoard[scoreKeys[i]].bestScore;    
+        scoreArray.push(tempArray);
+    }
+    return scoreArray;
+}
 
-/*
-
-  Joey: 5
-  Nathan: 6
-  Chief: 10
-
-  Joey     :    5
-  Nathan   :    6
-  Chief    :    10
-  */
